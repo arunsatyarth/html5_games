@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Tennis Game</title>
+	</head>
+	<body>
+		<canvas id="myCanvas" height="600" width="1000">
+			
+		</canvas>
+	</body>
+	<script type="text/javascript">
+		var canvas=null;
+		var canvasContext=null;
+		var width=1000;
+		var height=600;
+
+		var batlength=70;
+		var batlength2=200;
+
+
+		var ballx=width/2;
+		var bally=height/2;
+		var ballv=-10//ball  velocity
+		var	ball_hv=3;
+
+		var pointA=pointB=0;
+		var batx=0;
+		var baty=height/2-30;
+
+
+		var aibatx=width-10, aibaty=height/2, aibat_v=10;
+
+		window.onload=function(){
+			canvas=document.getElementById('myCanvas');
+			canvasContext=canvas.getContext('2d');
+
+			setInterval(function(e){
+				move();
+				draw();
+			},30);
+			canvas.addEventListener('mousemove',function(e){
+					console.log('setting val to '+e.clientY)
+
+				if(e.clientY>0){
+					baty=e.clientY;
+					console.log('setting val to '+baty)
+				}
+			});
+
+
+		}
+		function move(){
+			ballx=ballx+ballv;
+			bally=bally+ball_hv;
+			moveai();
+			if( ballx>width){
+				//if a bat was there then reverse
+				if(bally> aibaty && bally<(aibaty+batlength2))
+				{
+					ballv=-ballv;
+					//ball_hv=-ball_hv;
+
+
+				}
+				else{
+					//ball went outside. point for AI
+					pointA=pointA+1;
+					reset();
+					//ballv=-ballv;
+
+				}
+			}
+			if(ballx<0){
+				//if a bat was there then reverse
+				if(bally> baty && bally<(baty+batlength))
+				{
+					ballv=-ballv;
+					//ball_hv=-ball_hv;
+
+				}
+				else{
+					//ball went outside. point for AI
+					pointB=pointB+1;
+					reset();
+				}
+			}
+			if(bally<0 || bally>height){
+				ball_hv=-ball_hv;
+			}	
+
+		}
+		function moveai(){
+			aibaty=aibaty+aibat_v;
+			if(aibaty+batlength2>height){
+				aibat_v=-aibat_v;
+			}			
+			if(aibaty<0){
+				aibat_v=-aibat_v;
+			}
+		}
+		function reset(){
+			ballx=width/2;
+			bally=height/2;
+			ballv=-10;
+			ball_hv=5;
+		}
+		function draw(){
+			//draw board
+			canvasContext.fillStyle='black';
+			canvasContext.fillRect(0,0,1000,600);
+			//draw ball
+			canvasContext.fillStyle='red';
+			canvasContext.fillRect(ballx, bally,10,10);
+			//draw the bat
+			canvasContext.fillStyle='white';
+			canvasContext.fillRect(batx, baty,10,batlength);
+
+			//draw the aibat
+			canvasContext.fillStyle='white';
+			canvasContext.fillRect(aibatx, aibaty,10,batlength2);
+			//update scores
+			canvasContext.fillText("Player1: "+pointA, 100,100)
+			canvasContext.fillText("Player2: "+pointB, width-100,100)
+
+			
+
+		}
+	</script>
+</html>
