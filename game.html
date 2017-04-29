@@ -4,6 +4,7 @@
 		<title>Tennis Game</title>
 	</head>
 	<body>
+	<!--Inspired from https://www.youtube.com/watch?v=KoWqdEACyLI&t=29s-->
 		<canvas id="myCanvas" height="600" width="1000">
 			
 		</canvas>
@@ -70,8 +71,6 @@
 				if(bally> baty && bally<(baty+batlength))
 				{
 					ballv=-ballv;
-					//ball_hv=-ball_hv;
-
 				}
 				else{
 					//ball went outside. point for AI
@@ -106,6 +105,8 @@
 			//draw ball
 			canvasContext.fillStyle='red';
 			canvasContext.fillRect(ballx, bally,10,10);
+
+
 			//draw the bat
 			canvasContext.fillStyle='white';
 			canvasContext.fillRect(batx, baty,10,batlength);
